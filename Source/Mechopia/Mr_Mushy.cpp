@@ -19,47 +19,57 @@ void AMr_Mushy::BeginPlay()
 	Super::BeginPlay();
 	
 
-	GetCharacterMovement()->MaxWalkSpeed = 300.f;
+	GetCharacterMovement()->MaxWalkSpeed = 0.f;
 	
-	AMr_Mushy::Move();
+	
 }
 
 // Called every frame
 void AMr_Mushy::Tick( float DeltaTime )
 {
 	Super::Tick( DeltaTime );
-
-
-	//Measures the distance between the enemy and the player.
-	ToPlayer = UGameplayStatics::GetPlayerCharacter(GetWorld(), 0)->GetActorLocation() - GetActorLocation();
 	float Length = ToPlayer.Size();
-	if (Length <= 150.f)
+
+	if (Active == false && Length <= 1500)
 	{
-		Close = true;
-
-		// Find out which way is forward
-		Rotation = Controller->GetControlRotation();
-		FRotator YawRotation(0, Rotation.Yaw, 0);
-
-		// Get forward vector
-		Direction = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::X);
-
+		Active = true;
 		AMr_Mushy::Move();
-
-		// Makes the enemy stop it's forward movement.
-		float Value = -600.f;
-		AddMovementInput(Direction, Value);
+	}
 
 
-		// If the enemy is currently not attacking, it wll attack.
-		if (Attacking == false)
+	if (Active == true)
+	{
+		//Measures the distance between the enemy and the player.
+		ToPlayer = UGameplayStatics::GetPlayerCharacter(GetWorld(), 0)->GetActorLocation() - GetActorLocation();
+		
+		if (Length <= 150.f)
 		{
-			Attacking = true;
-			GetWorldTimerManager().SetTimer(DashTimerHandle, this, &AMr_Mushy::Attack, 2.f, true);
-		}
+			Close = true;
 
-		//GetRootPrimitiveComponent()->AddImpulse(GetActorForwardVector() * -500.0f);
-		//GetRootPrimitiveComponent()->SetPhysicsLinearVelocity(Direction*0);		
+			// Find out which way is forward
+			Rotation = Controller->GetControlRotation();
+			FRotator YawRotation(0, Rotation.Yaw, 0);
+
+			// Get forward vector
+			Direction = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::X);
+
+			AMr_Mushy::Move();
+
+			// Makes the enemy stop it's forward movement.
+			float Value = -600.f;
+			AddMovementInput(Direction, Value);
+
+
+			// If the enemy is currently not attacking, it wll attack.
+			if (Attacking == false)
+			{
+				//Attacking = true;
+				//GetWorldTimerManager().SetTimer(DashTimerHandle, this, &AMr_Mushy::Attack, 2.f, true);
+			}
+
+			//GetRootPrimitiveComponent()->AddImpulse(GetActorForwardVector() * -500.0f);
+			//GetRootPrimitiveComponent()->SetPhysicsLinearVelocity(Direction*0);		
+		}
 	}
 	else
 	{
