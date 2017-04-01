@@ -26,12 +26,6 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category=Camera)
 	float BaseLookUpRate;
 
-	UPROPERTY(EditAnywhere, Category = "Spawning")       
-		TSubclassOf<class APlayer_Bullet> BulletBlueprint;
-
-	UPROPERTY(EditAnywhere, Category = "Spawning")
-		float SpawnDistance;
-
 protected:
 
 	/** Resets HMD orientation in VR. */
@@ -60,8 +54,6 @@ protected:
 
 	/** Handler for when a touch input stops. */
 	void TouchStopped(ETouchIndex::Type FingerIndex, FVector Location);
-
-	void Shoot();
 
 protected:
 	// APawn interface

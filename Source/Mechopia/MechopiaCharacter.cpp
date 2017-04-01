@@ -3,14 +3,12 @@
 #include "Mechopia.h"
 #include "Kismet/HeadMountedDisplayFunctionLibrary.h"
 #include "MechopiaCharacter.h"
-#include "Player_Bullet.h"
 
 //////////////////////////////////////////////////////////////////////////
 // AMechopiaCharacter
 
 AMechopiaCharacter::AMechopiaCharacter()
 {
-	SpawnDistance = 10;
 	// Set size for collision capsule
 	GetCapsuleComponent()->InitCapsuleSize(42.f, 96.0f);
 
@@ -71,8 +69,6 @@ void AMechopiaCharacter::SetupPlayerInputComponent(class UInputComponent* Player
 
 	// VR headset functionality
 	PlayerInputComponent->BindAction("ResetVR", IE_Pressed, this, &AMechopiaCharacter::OnResetVR);
-
-	InputComponent->BindAction("Shoot", IE_Pressed, this, &AMechopiaCharacter::Shoot);
 }
 
 
@@ -129,18 +125,5 @@ void AMechopiaCharacter::MoveRight(float Value)
 		const FVector Direction = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::Y);
 		// add movement in that direction
 		AddMovementInput(Direction, Value);
-	}
-}
-
-void AMechopiaCharacter::Shoot()
-{
-	UWorld* World = GetWorld();	//Henter peker til spillverdenen
-	if (World)			//tester at verdenen finnes
-	{
-		FRotator PlayerRotation = GetActorRotation();
-		FVector Location = GetActorLocation(); 
-		FVector Forward = GetActorForwardVector();
-
-		World->SpawnActor<APlayer_Bullet>(BulletBlueprint, Location + (Forward * SpawnDistance), PlayerRotation);
 	}
 }
