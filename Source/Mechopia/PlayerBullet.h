@@ -26,6 +26,12 @@ public:
 	UPROPERTY(EditAnywhere, Category = Projectile)
 		float Speed;
 
+	UFUNCTION()
+		void OnOverlap(UPrimitiveComponent* OverlappedComponent, AActor *OtherActor,
+			UPrimitiveComponent *OtherComponent, int32 OtherBodyIndex,
+			bool bFromSweep, const FHitResult &SweepResult);
+
+
 private:
 
 	FVector Forward;

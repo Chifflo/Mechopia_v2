@@ -2,6 +2,7 @@
 
 #include "Mechopia.h"
 #include "PlayerBullet.h"
+#include "Mr_Mushy.h"
 
 
 // Sets default values
@@ -12,10 +13,12 @@ APlayerBullet::APlayerBullet()
 
 	// Use a sphere as a simple collision representation.
 	MeshComponent = CreateDefaultSubobject<USphereComponent>(TEXT("SphereComponent"));
-	// Set the sphere's collision radius.
-	MeshComponent->InitSphereRadius(15.0f);
 	// Set the root component to be the collision component.
 	RootComponent = MeshComponent;
+
+	Cast<UShapeComponent>(RootComponent)->bGenerateOverlapEvents = true;
+	Cast<UShapeComponent>(RootComponent)->OnComponentBeginOverlap.AddDynamic(this,
+		&APlayerBullet::OnOverlap);          //Her er ABullet navnet på klassen vi er inne i.
 
 	Speed = 500;
 }
@@ -25,6 +28,8 @@ void APlayerBullet::BeginPlay()
 {
 	Super::BeginPlay();
 	Forward = GetActorForwardVector();
+
+	UE_LOG(LogTemp, Warning, TEXT("Bullet was spawned"));
 }
 
 // Called every frame
@@ -36,4 +41,17 @@ void APlayerBullet::Tick( float DeltaTime )
 
 	SetActorLocation(Location + (Forward * DeltaTime * Speed));
 	
+}
+
+void APlayerBullet::OnOverlap(UPrimitiveComponent* OverlappedComponent, AActor *OtherActor,
+	UPrimitiveComponent *OtherComponent, int32 OtherBodyIndex,
+	bool bFromSweep, const FHitResult &SweepResult)
+{
+	UE_LOG(LogTemp, Warning, TEXT("Bullet has hit"));
+
+	if (OtherActor->IsA(AMr_Mushy::StaticClass())) {
+		UE_LOG(LogTemp, Warning, TEXT("Bullet was destroyed"));
+		Destroy();			//Slett kule
+	}
+
 }

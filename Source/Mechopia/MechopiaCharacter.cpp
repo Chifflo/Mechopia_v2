@@ -135,10 +135,13 @@ void AMechopiaCharacter::MoveRight(float Value)
 
 void AMechopiaCharacter::Fire()
 {
+	UE_LOG(LogTemp, Warning, TEXT("Trying to fire"));
 	//  I f.eks. Shoot()-funksjon:
 	UWorld* World = GetWorld();	//Henter peker til spillverdenen
 	if (World)			//tester at verdenen finnes
 	{
+		UE_LOG(LogTemp, Warning, TEXT("World is present"));
+
 		FVector Location = GetActorLocation();
 		
 		FRotator Rotation = GetActorRotation();
