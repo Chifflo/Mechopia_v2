@@ -3,6 +3,7 @@
 #include "Mechopia.h"
 #include "Kismet/HeadMountedDisplayFunctionLibrary.h"
 #include "MechopiaCharacter.h"
+#include "PlayerBullet.h"
 
 //////////////////////////////////////////////////////////////////////////
 // AMechopiaCharacter
@@ -40,6 +41,8 @@ AMechopiaCharacter::AMechopiaCharacter()
 
 	// Note: The skeletal mesh and anim blueprint references on the Mesh component (inherited from Character) 
 	// are set in the derived blueprint asset named MyCharacter (to avoid direct content references in C++)
+
+	SpawnDistance = 100;
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -69,6 +72,8 @@ void AMechopiaCharacter::SetupPlayerInputComponent(class UInputComponent* Player
 
 	// VR headset functionality
 	PlayerInputComponent->BindAction("ResetVR", IE_Pressed, this, &AMechopiaCharacter::OnResetVR);
+
+	InputComponent->BindAction("Fire", IE_Pressed, this, &AMechopiaCharacter::Fire);
 }
 
 
@@ -125,5 +130,21 @@ void AMechopiaCharacter::MoveRight(float Value)
 		const FVector Direction = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::Y);
 		// add movement in that direction
 		AddMovementInput(Direction, Value);
+	}
+}
+
+void AMechopiaCharacter::Fire()
+{
+	//  I f.eks. Shoot()-funksjon:
+	UWorld* World = GetWorld();	//Henter peker til spillverdenen
+	if (World)			//tester at verdenen finnes
+	{
+		FVector Location = GetActorLocation();
+		
+		FRotator Rotation = GetActorRotation();
+
+		FVector Forward = GetActorForwardVector();
+												 
+		World->SpawnActor<APlayerBullet>(BulletBlueprint, Location + (Forward * SpawnDistance) , Rotation);
 	}
 }
