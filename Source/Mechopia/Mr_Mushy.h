@@ -39,5 +39,6 @@ public:
 	void OnHit();
 	bool Close = false;
 	bool Attacking = false;
+	bool Active = false;
 	FTimerHandle DashTimerHandle;
 };
