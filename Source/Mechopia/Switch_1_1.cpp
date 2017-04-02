@@ -30,9 +30,15 @@ void ASwitch_1_1::Tick( float DeltaTime )
 
 void ASwitch_1_1::OnHit()
 {
-	ADoor_1_1 * Door = nullptr;
-
-	Door->Move();
+	//ADoor_1_1 * Door = nullptr;
+	if (targetActor) {
+		UE_LOG(LogTemp, Warning, TEXT("Door is there"));
+		ADoor_1_1* TheDoor = Cast<ADoor_1_1>(targetActor);
+		TheDoor->Move();
+	}
+	else {
+		UE_LOG(LogTemp, Warning, TEXT("Dor is not there"));
+	}
 
 }
 

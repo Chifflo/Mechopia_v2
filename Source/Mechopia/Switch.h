@@ -3,16 +3,16 @@
 #pragma once
 
 #include "GameFramework/Actor.h"
-#include "Switch_1_1.generated.h"
+#include "Switch.generated.h"
 
 UCLASS()
-class MECHOPIA_API ASwitch_1_1 : public AActor
+class MECHOPIA_API ASwitch : public AActor
 {
 	GENERATED_BODY()
 	
 public:	
 	// Sets default values for this actor's properties
-	ASwitch_1_1();
+	ASwitch();
 
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -20,8 +20,11 @@ public:
 	// Called every frame
 	virtual void Tick( float DeltaSeconds ) override;
 
+	bool Active;
+
 	UPROPERTY(EditAnywhere, Category = "Door")       //Category gir en overskrift i Editoren
-		AActor* targetActor;
-	
+		AActor* TargetActor;
+
 	void OnHit();
+	
 };

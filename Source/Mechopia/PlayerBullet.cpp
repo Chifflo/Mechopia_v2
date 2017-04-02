@@ -3,6 +3,8 @@
 #include "Mechopia.h"
 #include "PlayerBullet.h"
 #include "Mr_Mushy.h"
+#include "MechopiaCharacter.h"
+#include "Switch.h"
 
 
 // Sets default values
@@ -30,6 +32,8 @@ void APlayerBullet::BeginPlay()
 	Forward = GetActorForwardVector();
 
 	UE_LOG(LogTemp, Warning, TEXT("Bullet was spawned"));
+
+	Timer = 5;
 }
 
 // Called every frame
@@ -41,6 +45,12 @@ void APlayerBullet::Tick( float DeltaTime )
 
 	SetActorLocation(Location + (Forward * DeltaTime * Speed));
 	
+	Timer -= (1 * DeltaTime);
+
+	if (Timer < 0) {
+		UE_LOG(LogTemp, Warning, TEXT("Bullet was destroyed"));
+		Destroy();
+	}
 }
 
 void APlayerBullet::OnOverlap(UPrimitiveComponent* OverlappedComponent, AActor *OtherActor,
@@ -50,8 +60,17 @@ void APlayerBullet::OnOverlap(UPrimitiveComponent* OverlappedComponent, AActor *
 	UE_LOG(LogTemp, Warning, TEXT("Bullet has hit"));
 
 	if (OtherActor->IsA(AMr_Mushy::StaticClass())) {
+		UE_LOG(LogTemp, Warning, TEXT("Bullet hit mr mushy"));
 		UE_LOG(LogTemp, Warning, TEXT("Bullet was destroyed"));
+		AMr_Mushy* Enemy = Cast<AMr_Mushy>(OtherActor);
+		Enemy->OnHit();
 		Destroy();			//Slett kule
+	}
+	else if (OtherActor->IsA(ASwitch::StaticClass())) {
+		UE_LOG(LogTemp, Warning, TEXT("Bullet hit the switch"));
+		ASwitch* Switch = Cast<ASwitch>(OtherActor);
+		Switch->OnHit();
+		Destroy();
 	}
 
 }
