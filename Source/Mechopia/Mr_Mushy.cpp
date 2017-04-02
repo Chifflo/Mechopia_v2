@@ -30,10 +30,14 @@ void AMr_Mushy::Tick( float DeltaTime )
 	Super::Tick( DeltaTime );
 	float Length = ToPlayer.Size();
 
-	if (Active == false && Length <= 1500)
+	if (Active == false && Length <= 500)
 	{
 		Active = true;
 		AMr_Mushy::Move();
+	}
+	else
+	{
+		GetCharacterMovement()->MaxWalkSpeed = 0.f;
 	}
 
 
