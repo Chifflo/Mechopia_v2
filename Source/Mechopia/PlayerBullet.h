@@ -36,4 +36,6 @@ private:
 
 	FVector Forward;
 
+	float Timer;
+
 };
