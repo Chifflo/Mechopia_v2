@@ -151,3 +151,13 @@ void AMechopiaCharacter::Fire()
 		World->SpawnActor<APlayerBullet>(BulletBlueprint, Location + (Forward * SpawnDistance) , Rotation);
 	}
 }
+
+void AMechopiaCharacter::TakeDamage(int Damage) {
+
+	if (Damage) {
+		PlayerHealth -= Damage;
+	}
+	if (PlayerHealth < 1) {
+		Destroy();
+	}
+}

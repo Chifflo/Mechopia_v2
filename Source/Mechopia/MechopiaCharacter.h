@@ -69,10 +69,17 @@ public:
 	UFUNCTION()
 		void Fire();
 
+	UFUNCTION()
+		void TakeDamage(int Damage);
+
 	UPROPERTY(EditAnywhere, Category = "Spawning")       //Category gir en overskrift i Editoren
 		TSubclassOf<class APlayerBullet> BulletBlueprint;
 
 	UPROPERTY(EditAnywhere, Category = "Spawning")
 		float SpawnDistance;
+
+private:
+	float PlayerHealth;
+
 };
 
