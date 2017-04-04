@@ -5,6 +5,7 @@
 #include "Mr_Mushy.h"
 #include "MechopiaCharacter.h"
 #include "Switch.h"
+#include "Door.h"
 
 
 // Sets default values
@@ -57,19 +58,22 @@ void APlayerBullet::OnOverlap(UPrimitiveComponent* OverlappedComponent, AActor *
 	UPrimitiveComponent *OtherComponent, int32 OtherBodyIndex,
 	bool bFromSweep, const FHitResult &SweepResult)
 {
-	UE_LOG(LogTemp, Warning, TEXT("Bullet has hit"));
+	//UE_LOG(LogTemp, Warning, TEXT("Bullet has hit"));
 
 	if (OtherActor->IsA(AMr_Mushy::StaticClass())) {
-		UE_LOG(LogTemp, Warning, TEXT("Bullet hit mr mushy"));
-		UE_LOG(LogTemp, Warning, TEXT("Bullet was destroyed"));
+		//UE_LOG(LogTemp, Warning, TEXT("Bullet hit mr mushy"));
+		//UE_LOG(LogTemp, Warning, TEXT("Bullet was destroyed"));
 		AMr_Mushy* Enemy = Cast<AMr_Mushy>(OtherActor);
 		Enemy->OnHit();
 		Destroy();			//Slett kule
 	}
 	else if (OtherActor->IsA(ASwitch::StaticClass())) {
-		UE_LOG(LogTemp, Warning, TEXT("Bullet hit the switch"));
+		//UE_LOG(LogTemp, Warning, TEXT("Bullet hit the switch"));
 		ASwitch* Switch = Cast<ASwitch>(OtherActor);
 		Switch->OnHit();
+		Destroy();
+	}
+	else if (OtherActor->IsA(ADoor::StaticClass())) {
 		Destroy();
 	}
 

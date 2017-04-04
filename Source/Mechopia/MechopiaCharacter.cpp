@@ -52,8 +52,6 @@ void AMechopiaCharacter::SetupPlayerInputComponent(class UInputComponent* Player
 {
 	// Set up gameplay key bindings
 	check(PlayerInputComponent);
-	PlayerInputComponent->BindAction("Jump", IE_Pressed, this, &ACharacter::Jump);
-	PlayerInputComponent->BindAction("Jump", IE_Released, this, &ACharacter::StopJumping);
 
 	PlayerInputComponent->BindAxis("MoveForward", this, &AMechopiaCharacter::MoveForward);
 	PlayerInputComponent->BindAxis("MoveRight", this, &AMechopiaCharacter::MoveRight);
@@ -66,30 +64,7 @@ void AMechopiaCharacter::SetupPlayerInputComponent(class UInputComponent* Player
 	//PlayerInputComponent->BindAxis("LookUp", this, &APawn::AddControllerPitchInput);
 	//PlayerInputComponent->BindAxis("LookUpRate", this, &AMechopiaCharacter::LookUpAtRate);
 
-	// handle touch devices
-	PlayerInputComponent->BindTouch(IE_Pressed, this, &AMechopiaCharacter::TouchStarted);
-	PlayerInputComponent->BindTouch(IE_Released, this, &AMechopiaCharacter::TouchStopped);
-
-	// VR headset functionality
-	PlayerInputComponent->BindAction("ResetVR", IE_Pressed, this, &AMechopiaCharacter::OnResetVR);
-
 	InputComponent->BindAction("Fire", IE_Pressed, this, &AMechopiaCharacter::Fire);
-}
-
-
-void AMechopiaCharacter::OnResetVR()
-{
-	UHeadMountedDisplayFunctionLibrary::ResetOrientationAndPosition();
-}
-
-void AMechopiaCharacter::TouchStarted(ETouchIndex::Type FingerIndex, FVector Location)
-{
-		Jump();
-}
-
-void AMechopiaCharacter::TouchStopped(ETouchIndex::Type FingerIndex, FVector Location)
-{
-		StopJumping();
 }
 
 void AMechopiaCharacter::TurnAtRate(float Rate)
