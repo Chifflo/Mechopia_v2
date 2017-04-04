@@ -26,6 +26,9 @@ public:
 	UPROPERTY(EditAnywhere, Category = Projectile)
 		float Speed;
 
+	UPROPERTY(EditAnywhere, Category = Projectile)
+		float DespawnTimer;
+
 	UFUNCTION()
 		void OnOverlap(UPrimitiveComponent* OverlappedComponent, AActor *OtherActor,
 			UPrimitiveComponent *OtherComponent, int32 OtherBodyIndex,
@@ -35,7 +38,5 @@ public:
 private:
 
 	FVector Forward;
-
-	float Timer;
 
 };
