@@ -20,7 +20,8 @@ void AMr_Mushy::BeginPlay()
 	
 
 	GetCharacterMovement()->MaxWalkSpeed = 0.f;
-	
+	Active = false;
+	Attacking = false;
 	
 }
 
@@ -28,14 +29,16 @@ void AMr_Mushy::BeginPlay()
 void AMr_Mushy::Tick( float DeltaTime )
 {
 	Super::Tick( DeltaTime );
-	float Length = ToPlayer.Size();
+	ToPlayer = UGameplayStatics::GetPlayerCharacter(GetWorld(), 0)->GetActorLocation() - GetActorLocation();
+	Length = ToPlayer.Size();
 
-	if (Active == false && Length <= 500)
+	if (Active == false && Length <= 700)
 	{
 		Active = true;
 		AMr_Mushy::Move();
+		UE_LOG(LogTemp, Log, TEXT("Player Seen"));
 	}
-	else
+	else if (Active == false)
 	{
 		GetCharacterMovement()->MaxWalkSpeed = 0.f;
 	}
@@ -44,12 +47,11 @@ void AMr_Mushy::Tick( float DeltaTime )
 	if (Active == true)
 	{
 		//Measures the distance between the enemy and the player.
-		ToPlayer = UGameplayStatics::GetPlayerCharacter(GetWorld(), 0)->GetActorLocation() - GetActorLocation();
 		
-		if (Length <= 150.f)
+		
+		if (Length <= 300.f)
 		{
 			Close = true;
-
 			// Find out which way is forward
 			Rotation = Controller->GetControlRotation();
 			FRotator YawRotation(0, Rotation.Yaw, 0);
@@ -67,8 +69,10 @@ void AMr_Mushy::Tick( float DeltaTime )
 			// If the enemy is currently not attacking, it wll attack.
 			if (Attacking == false)
 			{
-				//Attacking = true;
-				//GetWorldTimerManager().SetTimer(DashTimerHandle, this, &AMr_Mushy::Attack, 2.f, true);
+				Attacking = true;
+				GetWorldTimerManager().SetTimer(DashTimerHandle, this, &AMr_Mushy::Attack, 0.4f, true);
+				UE_LOG(LogTemp, Warning, TEXT("Starting attack"));
+
 			}
 
 			//GetRootPrimitiveComponent()->AddImpulse(GetActorForwardVector() * -500.0f);
@@ -115,14 +119,17 @@ void AMr_Mushy::Move()
 
 void AMr_Mushy::Attack()
 {
+	/*
 	UWorld* World = GetWorld();
-
 	if (World)
 	{
 		FVector Location = GetActorLocation();
 		World->SpawnActor<AMushy_HBox>(Mushy_HBox_BP, Location, Rotation);
 	}
+	*/
 	Attacking = false;
+	UE_LOG(LogTemp, Warning, TEXT("Attack done"));
+
 }
 
 void AMr_Mushy::OnHit()
