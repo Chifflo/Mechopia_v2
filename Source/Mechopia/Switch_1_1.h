@@ -20,6 +20,8 @@ public:
 	// Called every frame
 	virtual void Tick( float DeltaSeconds ) override;
 
+	UPROPERTY(EditAnywhere, Category = "Door")       //Category gir en overskrift i Editoren
+		AActor* targetActor;
 	
 	void OnHit();
 };

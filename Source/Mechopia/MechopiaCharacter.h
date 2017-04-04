@@ -65,5 +65,21 @@ public:
 	FORCEINLINE class USpringArmComponent* GetCameraBoom() const { return CameraBoom; }
 	/** Returns FollowCamera subobject **/
 	FORCEINLINE class UCameraComponent* GetFollowCamera() const { return FollowCamera; }
+
+	UFUNCTION()
+		void Fire();
+
+	UFUNCTION()
+		void TakeDamage(int Damage);
+
+	UPROPERTY(EditAnywhere, Category = "Spawning")       //Category gir en overskrift i Editoren
+		TSubclassOf<class APlayerBullet> BulletBlueprint;
+
+	UPROPERTY(EditAnywhere, Category = "Spawning")
+		float SpawnDistance;
+
+private:
+	float PlayerHealth;
+
 };
 
