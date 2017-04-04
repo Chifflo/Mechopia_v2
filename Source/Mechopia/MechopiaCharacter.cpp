@@ -10,6 +10,10 @@
 
 AMechopiaCharacter::AMechopiaCharacter()
 {
+	InvincibleTimer = 5;
+
+	PlayerHealth = 5;
+
 	// Set size for collision capsule
 	GetCapsuleComponent()->InitCapsuleSize(42.f, 96.0f);
 
@@ -65,6 +69,14 @@ void AMechopiaCharacter::SetupPlayerInputComponent(class UInputComponent* Player
 	//PlayerInputComponent->BindAxis("LookUpRate", this, &AMechopiaCharacter::LookUpAtRate);
 
 	InputComponent->BindAction("Fire", IE_Pressed, this, &AMechopiaCharacter::Fire);
+}
+
+void AMechopiaCharacter::Tick(float DeltaTime)
+{
+
+	if (DamageTimer > 0) {
+		DamageTimer -= DeltaTime;
+	}
 }
 
 void AMechopiaCharacter::TurnAtRate(float Rate)
@@ -129,10 +141,15 @@ void AMechopiaCharacter::Fire()
 
 void AMechopiaCharacter::TakeDamage(int Damage) {
 
-	if (Damage) {
-		PlayerHealth -= Damage;
-	}
-	if (PlayerHealth < 1) {
-		Destroy();
+	if (DamageTimer < 1) {
+		if (Damage) {
+			UE_LOG(LogTemp, Warning, TEXT("Taking damage"));
+			PlayerHealth -= Damage;
+		}
+		if (PlayerHealth < 1) {
+			UE_LOG(LogTemp, Warning, TEXT("Dead"));
+			UGameplayStatics::OpenLevel(this, FName(*GetWorld()->GetName()), false);
+		}
+		DamageTimer = InvincibleTimer;
 	}
 }

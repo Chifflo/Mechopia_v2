@@ -57,6 +57,9 @@ public:
 	/** Returns FollowCamera subobject **/
 	FORCEINLINE class UCameraComponent* GetFollowCamera() const { return FollowCamera; }
 
+	// Called every frame
+	virtual void Tick(float DeltaSeconds) override;
+
 	UFUNCTION()
 		void Fire();
 
@@ -69,8 +72,13 @@ public:
 	UPROPERTY(EditAnywhere, Category = "Spawning")
 		float SpawnDistance;
 
+	UPROPERTY(EditAnywhere, Category = "Spawning")
+		float InvincibleTimer;
+
 private:
 	float PlayerHealth;
+
+	float DamageTimer;
 
 };
 

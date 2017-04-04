@@ -24,6 +24,8 @@ APlayerBullet::APlayerBullet()
 		&APlayerBullet::OnOverlap);          //Her er ABullet navnet på klassen vi er inne i.
 
 	Speed = 500;
+
+	DespawnTimer = 5;
 }
 
 // Called when the game starts or when spawned
@@ -34,7 +36,7 @@ void APlayerBullet::BeginPlay()
 
 	UE_LOG(LogTemp, Warning, TEXT("Bullet was spawned"));
 
-	Timer = 5;
+
 }
 
 // Called every frame
@@ -46,9 +48,9 @@ void APlayerBullet::Tick( float DeltaTime )
 
 	SetActorLocation(Location + (Forward * DeltaTime * Speed));
 	
-	Timer -= (1 * DeltaTime);
+	DespawnTimer -= DeltaTime;
 
-	if (Timer < 0) {
+	if (DespawnTimer < 0) {
 		UE_LOG(LogTemp, Warning, TEXT("Bullet was destroyed"));
 		Destroy();
 	}
@@ -76,5 +78,4 @@ void APlayerBullet::OnOverlap(UPrimitiveComponent* OverlappedComponent, AActor *
 	else if (OtherActor->IsA(ADoor::StaticClass())) {
 		Destroy();
 	}
-
 }
