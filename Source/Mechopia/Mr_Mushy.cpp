@@ -3,6 +3,7 @@
 #include "Mechopia.h"
 #include "Mr_Mushy.h"
 #include "Mushy_HBox.h"
+#include "MechopiaCharacter.h"
 
 
 // Sets default values
@@ -10,6 +11,7 @@ AMr_Mushy::AMr_Mushy()
 {
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
+
 
 }
 
@@ -142,4 +144,11 @@ void AMr_Mushy::OnHit()
 	}
 
 
+}
+
+void AMr_Mushy::OnOverlap(UPrimitiveComponent* OverlappedComponent, AActor *OtherActor, UPrimitiveComponent *OtherComponent, int32 OtherBodyIndex, bool bFromSweep, const FHitResult &SweepResult)
+{
+
+			Cast<AMechopiaCharacter>(OtherActor)->TakingDamage(Damage);
+			
 }

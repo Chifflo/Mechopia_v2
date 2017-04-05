@@ -152,7 +152,7 @@ void AMechopiaCharacter::Fire()
 	}
 }
 
-void AMechopiaCharacter::TakeDamage(int Damage) {
+void AMechopiaCharacter::TakingDamage(int Damage) {
 
 	if (Damage) {
 		PlayerHealth -= Damage;

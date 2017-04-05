@@ -70,7 +70,7 @@ public:
 		void Fire();
 
 	UFUNCTION()
-		void TakeDamage(int Damage);
+		void TakingDamage(int Damage);
 
 	UPROPERTY(EditAnywhere, Category = "Spawning")       //Category gir en overskrift i Editoren
 		TSubclassOf<class APlayerBullet> BulletBlueprint;
