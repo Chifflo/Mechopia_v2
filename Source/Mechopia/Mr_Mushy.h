@@ -5,6 +5,9 @@
 #include "GameFramework/Character.h"
 #include "Mr_Mushy.generated.h"
 
+
+
+
 UCLASS()
 class MECHOPIA_API AMr_Mushy : public ACharacter
 {
@@ -12,6 +15,8 @@ class MECHOPIA_API AMr_Mushy : public ACharacter
 
 		UPROPERTY(EditAnywhere, Category = "Spawning")
 		TSubclassOf<class AMushy_HBox> Mushy_HBox_BP;
+
+
 
 
 public:
@@ -27,18 +32,20 @@ public:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
-	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		bool Attacking = true;
+
 	FVector ToPlayer;
 	FVector Direction;
 	FRotator Rotation;
 	float Counter = 1.f;
 	float Health = 3.f;
+	float Length;
 	void Dash();
 	void Move();
 	void Attack();
 	void OnHit();
 	bool Close = false;
-	bool Attacking = false;
 	bool Active = false;
 	FTimerHandle DashTimerHandle;
 };
