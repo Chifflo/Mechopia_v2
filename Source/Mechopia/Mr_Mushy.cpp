@@ -31,59 +31,63 @@ void AMr_Mushy::BeginPlay()
 void AMr_Mushy::Tick( float DeltaTime )
 {
 	Super::Tick( DeltaTime );
-	ToPlayer = UGameplayStatics::GetPlayerCharacter(GetWorld(), 0)->GetActorLocation() - GetActorLocation();
-	Length = ToPlayer.Size();
 
-	if (Active == false && Length <= 700)
+	if (UGameplayStatics::GetPlayerCharacter(GetWorld(), 0))
 	{
-		Active = true;
-		AMr_Mushy::Move();
-		UE_LOG(LogTemp, Log, TEXT("Player Seen"));
-	}
-	else if (Active == false)
-	{
-		GetCharacterMovement()->MaxWalkSpeed = 0.f;
-	}
+		ToPlayer = UGameplayStatics::GetPlayerCharacter(GetWorld(), 0)->GetActorLocation() - GetActorLocation();
+		Length = ToPlayer.Size();
 
-
-	if (Active == true)
-	{
-		//Measures the distance between the enemy and the player.
-		
-		
-		if (Length <= 300.f)
+		if (Active == false && Length <= 700)
 		{
-			Close = true;
-			// Find out which way is forward
-			Rotation = Controller->GetControlRotation();
-			FRotator YawRotation(0, Rotation.Yaw, 0);
-
-			// Get forward vector
-			Direction = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::X);
-
+			Active = true;
 			AMr_Mushy::Move();
-
-			// Makes the enemy stop it's forward movement.
-			float Value = -600.f;
-			AddMovementInput(Direction, Value);
-
-
-			// If the enemy is currently not attacking, it wll attack.
-			if (Attacking == false)
-			{
-				Attacking = true;
-				GetWorldTimerManager().SetTimer(DashTimerHandle, this, &AMr_Mushy::Attack, 0.4f, true);
-				UE_LOG(LogTemp, Warning, TEXT("Starting attack"));
-
-			}
-
-			//GetRootPrimitiveComponent()->AddImpulse(GetActorForwardVector() * -500.0f);
-			//GetRootPrimitiveComponent()->SetPhysicsLinearVelocity(Direction*0);		
+			UE_LOG(LogTemp, Log, TEXT("Player Seen"));
 		}
-	}
-	else
-	{
-		Close = false;
+		else if (Active == false)
+		{
+			GetCharacterMovement()->MaxWalkSpeed = 0.f;
+		}
+
+
+		if (Active == true)
+		{
+			//Measures the distance between the enemy and the player.
+
+
+			if (Length <= 300.f)
+			{
+				Close = true;
+				// Find out which way is forward
+				Rotation = Controller->GetControlRotation();
+				FRotator YawRotation(0, Rotation.Yaw, 0);
+
+				// Get forward vector
+				Direction = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::X);
+
+				AMr_Mushy::Move();
+
+				// Makes the enemy stop it's forward movement.
+				float Value = -600.f;
+				AddMovementInput(Direction, Value);
+
+
+				// If the enemy is currently not attacking, it wll attack.
+				if (Attacking == false)
+				{
+					Attacking = true;
+					GetWorldTimerManager().SetTimer(DashTimerHandle, this, &AMr_Mushy::Attack, 1.0f, true);
+					UE_LOG(LogTemp, Warning, TEXT("Starting attack"));
+
+				}
+
+				//GetRootPrimitiveComponent()->AddImpulse(GetActorForwardVector() * -500.0f);
+				//GetRootPrimitiveComponent()->SetPhysicsLinearVelocity(Direction*0);		
+			}
+		}
+		else
+		{
+			Close = false;
+		}
 	}
 
 }
@@ -146,9 +150,3 @@ void AMr_Mushy::OnHit()
 
 }
 
-void AMr_Mushy::OnOverlap(UPrimitiveComponent* OverlappedComponent, AActor *OtherActor, UPrimitiveComponent *OtherComponent, int32 OtherBodyIndex, bool bFromSweep, const FHitResult &SweepResult)
-{
-
-			Cast<AMechopiaCharacter>(OtherActor)->TakingDamage(Damage);
-			
-}

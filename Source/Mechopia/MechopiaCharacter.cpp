@@ -152,7 +152,7 @@ void AMechopiaCharacter::Fire()
 	}
 }
 
-void AMechopiaCharacter::TakingDamage(int Damage) {
+int AMechopiaCharacter::TakingDamage(int Damage) {
 
 	if (Damage) {
 		PlayerHealth -= Damage;
@@ -160,4 +160,9 @@ void AMechopiaCharacter::TakingDamage(int Damage) {
 	if (PlayerHealth < 1) {
 		Destroy();
 	}
+
+	UE_LOG(LogTemp, Warning, TEXT("pLAYER tAKING dAMAGE"));
+	
+
+	return 0;
 }
